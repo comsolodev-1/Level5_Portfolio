@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<!--
+  ═══════════════════════════════════════════════════════
+  index.html — Portfolio Entry Point
+  Author   : Your Name
+  Purpose  : Single-page portfolio with SEO, structured
+             data, accessibility, and EmailJS contact form
+  Sections : Hero → Skills → Experience → Projects → Contact
+  ═══════════════════════════════════════════════════════
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!--
+    viewport: width=device-width → prevents iOS from zooming out on load
+    initial-scale=1.0           → ensures 1:1 pixel ratio on all devices
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ══════════════════════════════════════════
+       PRIMARY SEO META TAGS
+       These are read by Google and other crawlers.
+       • title       → shown in search result headlines (50–60 chars ideal)
+       • description → shown as the snippet under the title (150–160 chars)
+       • keywords    → low weight today but still used by some search engines
+       • author      → credits the page owner
+       • robots      → tells crawlers to index this page and follow its links
+       • canonical   → prevents duplicate-content penalties if page is mirrored
+  ══════════════════════════════════════════ -->
+  <title>Your Name | Full Stack Developer</title>
+  <meta name="description"
+        content="Full Stack Developer specializing in building scalable, elegant web applications with React, Node.js, and PostgreSQL. Available for freelance and full-time opportunities." />
+  <meta name="keywords"
+        content="full stack developer, web developer, React, Node.js, JavaScript, TypeScript, PostgreSQL, portfolio, freelance developer" />
+  <meta name="author"    content="Your Name" />
+  <meta name="robots"    content="index, follow" />
+  <link rel="canonical"  href="https://yourportfolio.com" />
+
+  <!-- ══════════════════════════════════════════
+       OPEN GRAPH TAGS (Facebook, LinkedIn, Slack, Discord previews)
+       og:type        → "website" for a portfolio page
+       og:url         → canonical URL of this page
+       og:title       → headline shown in the link preview card
+       og:description → body text in the preview card
+       og:image       → preview thumbnail (recommended: 1200×630px)
+       og:locale      → tells crawlers the language/region
+       og:site_name   → your brand name shown in the card
+  ══════════════════════════════════════════ -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://yourportfolio.com" />
+  <meta property="og:title"       content="Your Name | Full Stack Developer" />
+  <meta property="og:description" content="Full Stack Developer building scalable, elegant web applications. Available for freelance and full-time work." />
+  <meta property="og:image"       content="https://yourportfolio.com/og-image.png" />
+  <meta property="og:locale"      content="en_US" />
+  <meta property="og:site_name"   content="Your Name Portfolio" />
+
+  <!-- ══════════════════════════════════════════
+       TWITTER CARD TAGS
+       Controls how your link looks when shared on X/Twitter.
+       summary_large_image → shows a big image card (best for portfolios)
+       twitter:url         → the canonical URL being shared
+       twitter:image       → image for the card (min 300×157px, max 4096×4096)
+       twitter:image:alt   → accessibility description of the card image
+       twitter:site        → your Twitter/X handle (optional)
+  ══════════════════════════════════════════ -->
+  <meta name="twitter:card"      content="summary_large_image" />
+  <meta name="twitter:url"       content="https://yourportfolio.com" />
+  <meta name="twitter:title"     content="Your Name | Full Stack Developer" />
+  <meta name="twitter:description" content="Full Stack Developer building scalable, elegant web applications." />
+  <meta name="twitter:image"     content="https://yourportfolio.com/og-image.png" />
+  <meta name="twitter:image:alt" content="Your Name — Full Stack Developer portfolio" />
+  <!-- <meta name="twitter:site"   content="@yourhandle" /> -->
+
+  <!-- ══════════════════════════════════════════
+       JSON-LD STRUCTURED DATA (Schema.org)
+       Tells Google exactly who this page is about.
+       Enables rich results (e.g. name + job title in search).
+       @type "Person" is the correct type for a personal portfolio.
+       sameAs → links your identity across platforms; improves Knowledge Panel.
+  ══════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Your Name",
+    "url": "https://yourportfolio.com",
+    "jobTitle": "Full Stack Developer",
+    "description": "Full Stack Developer specializing in React, Node.js, and PostgreSQL.",
+    "knowsAbout": ["React", "Node.js", "TypeScript", "PostgreSQL", "Docker"],
+    "sameAs": [
+      "https://github.com/yourusername",
+      "https://linkedin.com/in/yourusername"
+    ]
+  }
+  </script>
+
+  <!-- ══════════════════════════════════════════
+       FONTS
+       preconnect → opens early TCP/TLS connections to Google Fonts servers
+                    before the browser even starts parsing the font link tag.
+                    Cuts ~100-200ms off font load time.
+       crossorigin → required on the gstatic preconnect (CORS resource)
+       display=swap → text renders in fallback font immediately; swaps to
+                      custom font when loaded (prevents invisible text flash)
+  ══════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Epilogue:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+
+  <!-- ══════════════════════════════════════════
+       BROWSER / PWA META
+       theme-color → tints the mobile browser chrome bar (Chrome on Android,
+                     Safari on iOS) to match your background color
+  ══════════════════════════════════════════ -->
+  <meta name="theme-color" content="#fafafa" />
+
+  <!-- ══════════════════════════════════════════
+       EMAILJS SDK
+       Loaded in <head> (not deferred) so it's available before
+       DOMContentLoaded fires and our main.js initializes it.
+       The CDN version is pinned to major version 4 for stability.
+  ══════════════════════════════════════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- ══════════════════════════════════════════
+       STYLESHEET
+       Linked last in <head> so fonts and meta are resolved first.
+       rel="stylesheet" blocks rendering until loaded — intentional,
+       prevents flash of unstyled content (FOUC).
+  ══════════════════════════════════════════ -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!--
+    NOISE TEXTURE OVERLAY
+    A fixed pseudo-layer that adds subtle film grain to the background.
+    aria-hidden="true" → screen readers completely skip this decorative div.
+    pointer-events: none in CSS → never intercepts clicks or taps.
+  -->
+  <div class="noise" aria-hidden="true"></div>
+
+  <!-- ══════════════════════════════════════════
+       NAVIGATION
+       role="navigation" → explicit landmark for screen readers
+                           (redundant with <nav> but improves compat
+                            with older assistive tech)
+       aria-label        → distinguishes this nav if there were multiple
+                           on the page (e.g. "breadcrumb navigation")
+  ══════════════════════════════════════════ -->
+  <nav role="navigation" aria-label="Main navigation">
+
+    <!-- Logo / home link — wraps in <a> so it's keyboard-focusable -->
+    <a class="nav-logo" href="#hero">
+      <span class="logo-bracket">&lt;</span>yn<span class="logo-bracket">/&gt;</span>
+    </a>
+
+    <!--
+      Nav links list
+      id="navLinks" → targeted by JS for mobile open/close toggle
+      Ordered as: Skills → Experience → Projects → Contact (CTA)
+    -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#github">GitHub</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <!-- nav-cta class styles this as a filled pill button -->
+      <li><a href="#contact" class="nav-cta">Let's talk</a></li>
+    </ul>
+
+    <!--
+      Hamburger button — visible only on mobile (≤ 768px via CSS)
+      aria-label    → describes the button to screen readers (no visible text)
+      aria-expanded → toggled by JS to announce open/closed state to assistive tech
+      The three <span> elements are the visual bars; animated to X when open
+    -->
+    <!--
+      COMMAND PALETTE TRIGGER — Level 4 addition
+      Opens the #commandPalette overlay (markup near end of <body>).
+      Also openable from anywhere on the page via Cmd/Ctrl+K — this
+      button just makes the feature discoverable for people who don't
+      know the shortcut exists yet.
+    -->
+    <button class="cmdk-trigger" id="cmdkTrigger" aria-label="Open command palette (Ctrl+K)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <path d="M21 21l-4.3-4.3"/>
+      </svg>
+      <span class="cmdk-trigger-kbd">Ctrl K</span>
+    </button>
+
+    <!--
+      THEME TOGGLE — Level 3 addition
+      Sits outside .nav-links so it's always visible, even when the
+      mobile menu is closed. JS flips [data-theme] on <html> and
+      persists the choice in localStorage (see initThemeToggle in main.js).
+      Two SVGs (sun/moon) are both in the DOM; CSS shows/hides via [data-theme].
+      aria-pressed reflects state to screen readers.
+    -->
+    <button class="theme-toggle" id="themeToggle"
+            aria-label="Toggle dark mode" aria-pressed="false">
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+      </svg>
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+
+    <button class="hamburger" id="hamburger"
+            aria-label="Toggle navigation menu"
+            aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </nav>
+
+  <!-- ══════════════════════════════════════════
+       MAIN CONTENT
+       <main> is the primary landmark — screen readers can jump here directly.
+       padding-top in CSS offsets the fixed nav height so content isn't hidden.
+  ══════════════════════════════════════════ -->
+  <main>
+
+    <!-- ══════════════════════════════════════
+         SECTION 01 — HERO
+         The first thing visitors see. Full-viewport height.
+         aria-labelledby="hero-name" → the h1 acts as the section's label
+         for screen readers, so it reads "hero-name: Your Name" as a landmark.
+    ══════════════════════════════════════ -->
+    <section id="hero" aria-labelledby="hero-name">
+
+      <!-- Large decorative "DEV" text rendered in CSS as outline-only.
+           aria-hidden → purely visual, no semantic meaning -->
+      <div class="hero-bg-text" aria-hidden="true">DEV</div>
+
+      <!-- Two-column content grid: name (left) + description panel (right) -->
+      <div class="hero-content">
+
+        <!-- Availability status badge with animated dot -->
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Available for opportunities
+        </div>
+
+        <!--
+          h1 — THE most important SEO element on the page.
+          Only one h1 per page. Contains your name (primary keyword for
+          personal branding). The <em> creates the italic visual split.
+          id="hero-name" → referenced by section's aria-labelledby
+        -->
+        <h1 id="hero-name" class="hero-name">
+          Your<br /><em>Name</em>
+        </h1>
+
+        <!-- Right panel: role title, bio, and CTA buttons -->
+        <div class="hero-right">
+
+          <!-- Job title — <p> not <h2> since it's decorative, not structural -->
+          <p class="hero-role">Full Stack<br />Developer</p>
+
+          <!-- Short bio — keep this punchy, under 30 words -->
+          <p class="hero-desc">
+            I build end-to-end web applications — polished frontends, robust APIs,
+            and databases that scale. I care about craft, performance, and code that lasts.
+          </p>
+
+          <!-- Call-to-action buttons -->
+          <div class="hero-actions">
+            <!-- Primary CTA → leads to Projects section -->
+            <a href="#projects" class="btn-primary">
+              View work
+              <!-- Arrow icon — aria-hidden since the text already describes the action -->
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <!-- Secondary CTA → smooth-scrolls to Contact section -->
+            <a href="#contact" class="btn-ghost">Get in touch</a>
+            <!--
+              DOWNLOAD RESUME — Level 5 addition
+              Uses window.print() rather than a PDF-generation library —
+              the browser's native "Save as PDF" already does exactly
+              this, for free, with zero added dependencies. The
+              @media print rules in style.css control what the printed
+              output looks like, and (unlike a typical print stylesheet)
+              deliberately do NOT force white-background/black-text —
+              it keeps whatever [data-theme] is currently active, so the
+              PDF matches whichever mode you were browsing in.
+              See initResumeDownload() in main.js.
+            -->
+            <button type="button" class="btn-ghost" id="downloadResumeBtn">
+              Download Resume
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/>
+              </svg>
+            </button>
+          </div>
+
+        </div><!-- /hero-right -->
+      </div><!-- /hero-content -->
+
+      <!-- Stats bar + scroll indicator at bottom of hero -->
+      <div class="hero-footer">
+        <!-- Quick social-proof numbers -->
+        <div class="hero-stat">
+          <span class="stat-num">3+</span>
+          <span class="stat-label">Years exp.</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-num">20+</span>
+          <span class="stat-label">Projects shipped</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-num">10k+</span>
+          <span class="stat-label">Users served</span>
+        </div>
+        <!-- Animated scroll cue — hidden on very small screens (CSS) -->
+        <div class="scroll-hint">
+          <span class="scroll-line"></span>
+          <span>scroll</span>
+        </div>
+      </div><!-- /hero-footer -->
+
+    </section><!-- /hero -->
+
+
+    <!-- ══════════════════════════════════════
+         SECTION 02 — ACHIEVEMENTS (Level 5)
+         A quick, scannable credibility strip right after the hero —
+         before asking anyone to read the full Skills/Experience detail.
+         Each badge "unlocks" (pops in) once scrolled into view, staggered
+         left-to-right — see initAchievementsReveal() in main.js.
+    ══════════════════════════════════════ -->
+    <section id="achievements" aria-labelledby="achievements-heading">
+
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2 id="achievements-heading">Achievements</h2>
+      </div>
+
+      <div class="achievements-strip">
+
+        <div class="achievement-badge">
+          <div class="achievement-icon" aria-hidden="true">🔥</div>
+          <h3 class="achievement-title">100 Days of Code</h3>
+          <p class="achievement-desc">Shipped something and posted about it every day for over 3 months straight.</p>
+        </div>
+
+        <div class="achievement-badge">
+          <div class="achievement-icon" aria-hidden="true">🌱</div>
+          <h3 class="achievement-title">Open Source Contributor</h3>
+          <p class="achievement-desc">Published a CLI tool as open source — see the CLI Tool case study below.</p>
+        </div>
+
+        <div class="achievement-badge">
+          <div class="achievement-icon" aria-hidden="true">🚀</div>
+          <h3 class="achievement-title">4 Portfolio Iterations</h3>
+          <p class="achievement-desc">Rebuilt this site top-to-bottom four times, chasing a genuinely better version each time.</p>
+        </div>
+
+        <div class="achievement-badge">
+          <div class="achievement-icon" aria-hidden="true">🎓</div>
+          <h3 class="achievement-title">Certified — [Add yours]</h3>
+          <p class="achievement-desc">Swap this for a real certification name once you've got one to show.</p>
+        </div>
+
+        <div class="achievement-badge">
+          <div class="achievement-icon" aria-hidden="true">⚡</div>
+          <h3 class="achievement-title">Hackathon Ready</h3>
+          <p class="achievement-desc">Missed my first hackathon window — used the momentum to level up this portfolio instead.</p>
+        </div>
+
+      </div><!-- /achievements-strip -->
+    </section><!-- /achievements -->
+
+
+    <!-- ══════════════════════════════════════
+         SECTION 02 — SKILLS
+         4-column grid of skill categories.
+         aria-labelledby ties the h2 as the accessible name for this region.
+    ══════════════════════════════════════ -->
+    <section id="skills" aria-labelledby="skills-heading">
+
+      <!-- Section header: numbered label + heading -->
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2 id="skills-heading">Skills &amp; Stack</h2>
+      </div>
+
+      <!--
+        Legend for the proficiency bars — without this, the little bars
+        next to each skill are just unexplained gray marks. Also shown
+        as a live example (3 filled / 2 empty) rather than only in words,
+        so it reads at a glance even before you look at any actual skill.
+      -->
+      <p class="skills-legend">
+        <span class="skills-legend-example" aria-hidden="true">
+          <span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span><span class="prof-seg"></span>
+        </span>
+        = self-rated proficiency, out of 5
+      </p>
+
+      <!--
+        fade-in is now on each .skill-card individually (not the container) —
+        combined with the nth-child transition-delay rules in style.css,
+        this makes the four cards cascade in one after another instead of
+        popping in as a single flat block.
+        skill-card--accent on the first card → dark/inverted for visual contrast.
+
+        TECH ICONS — Level 4.1 refinement
+        Was previously one combined icon-row image per card; now each
+        skill gets its own individual icon (still from skillicons.dev,
+        just one slug per request instead of a comma-joined row) paired
+        with a name and a 5-segment proficiency bar (.skill-proficiency).
+        syncSkillIcons() in main.js rebuilds each .skill-row-icon's src
+        when the theme toggles, using data-icon (+ data-fixed-theme on
+        the permanently-dark Frontend card).
+        Proficiency levels are self-assessed placeholders — edit the
+        number of "filled" .prof-seg spans per skill to your own honest
+        level (0–5) before publishing.
+      -->
+      <div class="skills-grid">
+
+        <!-- CARD 1: Frontend — inverted dark card -->
+        <div class="skill-card skill-card--accent fade-in">
+          <span class="skill-index" aria-hidden="true">01</span>
+          <h3 class="skill-category">Frontend</h3>
+          <div class="skill-rows">
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="react" data-fixed-theme="dark"
+                   src="https://skillicons.dev/icons?i=react&theme=dark"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">React</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 5 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">5/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="nextjs" data-fixed-theme="dark"
+                   src="https://skillicons.dev/icons?i=nextjs&theme=dark"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Next.js</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 4 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">4/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="ts" data-fixed-theme="dark"
+                   src="https://skillicons.dev/icons?i=ts&theme=dark"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">TypeScript</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 4 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">4/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="tailwind" data-fixed-theme="dark"
+                   src="https://skillicons.dev/icons?i=tailwind&theme=dark"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Tailwind CSS</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 5 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">5/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="figma" data-fixed-theme="dark"
+                   src="https://skillicons.dev/icons?i=figma&theme=dark"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Figma</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 3 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">3/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span><span class="prof-seg"></span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: Backend -->
+        <div class="skill-card fade-in">
+          <span class="skill-index" aria-hidden="true">02</span>
+          <h3 class="skill-category">Backend</h3>
+          <div class="skill-rows">
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="nodejs"
+                   src="https://skillicons.dev/icons?i=nodejs&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Node.js</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 5 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">5/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="express"
+                   src="https://skillicons.dev/icons?i=express&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Express</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 4 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">4/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="graphql"
+                   src="https://skillicons.dev/icons?i=graphql&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">GraphQL</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 3 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">3/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span><span class="prof-seg"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="py"
+                   src="https://skillicons.dev/icons?i=py&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Python</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 4 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">4/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="socketio"
+                   src="https://skillicons.dev/icons?i=socketio&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">WebSockets</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 3 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">3/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span><span class="prof-seg"></span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3: Database -->
+        <div class="skill-card fade-in">
+          <span class="skill-index" aria-hidden="true">03</span>
+          <h3 class="skill-category">Database</h3>
+          <div class="skill-rows">
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="postgres"
+                   src="https://skillicons.dev/icons?i=postgres&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">PostgreSQL</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 4 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">4/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="mongodb"
+                   src="https://skillicons.dev/icons?i=mongodb&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">MongoDB</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 4 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">4/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="redis"
+                   src="https://skillicons.dev/icons?i=redis&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Redis</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 3 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">3/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span><span class="prof-seg"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="prisma"
+                   src="https://skillicons.dev/icons?i=prisma&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Prisma ORM</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 4 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">4/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: Tools & DevOps -->
+        <div class="skill-card fade-in">
+          <span class="skill-index" aria-hidden="true">04</span>
+          <h3 class="skill-category">Tools &amp; Ops</h3>
+          <div class="skill-rows">
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="git"
+                   src="https://skillicons.dev/icons?i=git&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Git</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 5 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">5/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="github"
+                   src="https://skillicons.dev/icons?i=github&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">GitHub</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 5 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">5/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="docker"
+                   src="https://skillicons.dev/icons?i=docker&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Docker</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 4 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">4/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="actions"
+                   src="https://skillicons.dev/icons?i=actions&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">CI/CD</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 3 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">3/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span><span class="prof-seg"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="vercel"
+                   src="https://skillicons.dev/icons?i=vercel&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Vercel</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 4 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">4/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span></span>
+            </div>
+            <div class="skill-row">
+              <img class="skill-row-icon" data-icon="linux"
+                   src="https://skillicons.dev/icons?i=linux&theme=light"
+                   alt="" width="26" height="26" loading="lazy" />
+              <span class="skill-row-name">Linux</span>
+              <span class="skill-proficiency" aria-label="Proficiency: 3 out of 5"><span class="prof-seg filled"></span><span class="skill-proficiency-value">3/5</span><span class="prof-seg filled"></span><span class="prof-seg filled"></span><span class="prof-seg"></span><span class="prof-seg"></span></span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /skills-grid -->
+    </section><!-- /skills -->
+
+
+    <!-- ══════════════════════════════════════
+         SECTION 03 — EXPERIENCE
+         Vertical timeline layout.
+         Uses <article> for each job entry — semantically correct since
+         each entry is a self-contained piece of content.
+    ══════════════════════════════════════ -->
+    <section id="experience" aria-labelledby="exp-heading">
+
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2 id="exp-heading">Experience</h2>
+      </div>
+
+      <!--
+        fade-in now lives on each .exp-item individually (see nth-child
+        transition-delay rules in style.css) so entries cascade in one
+        after another instead of the whole timeline appearing at once.
+      -->
+      <div class="timeline">
+
+        <!-- JOB ENTRY 1: Most recent first (reverse chronological — standard for devs)
+             exp-item--current → adds the pulsing badge ring + "Current" pill,
+             since this is the only entry still marked "Present" -->
+        <article class="exp-item exp-item--current fade-in">
+          <!-- Numbered badge on the timeline line -->
+          <div class="exp-badge" aria-hidden="true">01</div>
+          <!-- Role title + date range on same row, wraps on mobile -->
+          <div class="exp-meta">
+            <h3 class="exp-role">
+              Full Stack Developer
+              <span class="exp-current-tag">Current</span>
+            </h3>
+            <span class="exp-period">2023 — Present</span>
+          </div>
+          <p class="exp-company">Company Name · Full-time</p>
+          <p class="exp-desc">
+            Built and maintained multiple client-facing applications from scratch.
+            Led frontend architecture decisions, optimized API response times by 40%,
+            and shipped a real-time notification system used by 10k+ users.
+          </p>
+          <!-- Tech stack tags for this role -->
+          <div class="exp-tags">
+            <span class="tag">React</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Docker</span>
+          </div>
+
+          <!--
+            KEY ACHIEVEMENTS — Level 4.1 addition
+            Collapsed by default; tapping the toggle reveals 2-3 concrete,
+            specific wins beyond the one-paragraph summary above. Same
+            0fr→1fr grid animation as the case study accordion, for the
+            same reason: no JS height-measuring needed.
+          -->
+          <button type="button" class="exp-toggle" aria-expanded="false">
+            <span class="exp-toggle-label">Key achievements</span>
+            <svg class="exp-toggle-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="exp-achievements-wrap">
+            <ul class="exp-achievements">
+              <li>Rebuilt the checkout flow, cutting cart-abandonment rate by 18%</li>
+              <li>Introduced a shared component library adopted across 3 internal teams</li>
+              <li>Mentored 2 junior developers through their first production deploys</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- JOB ENTRY 2 -->
+        <article class="exp-item fade-in">
+          <div class="exp-badge" aria-hidden="true">02</div>
+          <div class="exp-meta">
+            <h3 class="exp-role">Frontend Developer</h3>
+            <span class="exp-period">2022 — 2023</span>
+          </div>
+          <p class="exp-company">Another Company · Contract</p>
+          <p class="exp-desc">
+            Collaborated with design and product teams to deliver pixel-perfect UI components.
+            Improved Lighthouse score from 62 to 94 through lazy loading, code splitting,
+            and CDN caching strategies.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Tailwind</span>
+          </div>
+
+          <button type="button" class="exp-toggle" aria-expanded="false">
+            <span class="exp-toggle-label">Key achievements</span>
+            <svg class="exp-toggle-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="exp-achievements-wrap">
+            <ul class="exp-achievements">
+              <li>Cut largest-contentful-paint time by 2.1s on the main marketing pages</li>
+              <li>Built a reusable design-token system shared with the design team</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- JOB ENTRY 3 -->
+        <article class="exp-item fade-in">
+          <div class="exp-badge" aria-hidden="true">03</div>
+          <div class="exp-meta">
+            <h3 class="exp-role">Junior Web Developer</h3>
+            <span class="exp-period">2021 — 2022</span>
+          </div>
+          <p class="exp-company">Startup Name · Full-time</p>
+          <p class="exp-desc">
+            Took ownership of the company's internal dashboard. Introduced TypeScript
+            to the codebase and mentored two interns on React best practices.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">Express</span>
+            <span class="tag">MongoDB</span>
+          </div>
+
+          <button type="button" class="exp-toggle" aria-expanded="false">
+            <span class="exp-toggle-label">Key achievements</span>
+            <svg class="exp-toggle-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="exp-achievements-wrap">
+            <ul class="exp-achievements">
+              <li>Migrated the dashboard's legacy JS codebase to TypeScript with zero downtime</li>
+              <li>Wrote the team's first onboarding guide, now used for every new hire</li>
+            </ul>
+          </div>
+        </article>
+
+      </div><!-- /timeline -->
+    </section><!-- /experience -->
+
+
+    <!-- ══════════════════════════════════════
+         SECTION 05 — PROJECTS
+         3-column card grid.
+         <article> is used per project — each is a self-contained item.
+         project-card--featured → first card has dark background for visual hierarchy.
+    ══════════════════════════════════════ -->
+    <section id="projects" aria-labelledby="projects-heading">
+
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2 id="projects-heading">Projects</h2>
+      </div>
+
+      <!--
+        FILTER PILLS — Level 3 addition
+        data-filter="all" is the default active pill.
+        Each other pill's data-filter must match a word inside the
+        data-category attribute on the .project-card articles below —
+        see filterProjects() in main.js for the matching logic.
+        role="group" + aria-label → announced as a single control group,
+        not a random list of buttons, to screen readers.
+      -->
+      <div class="project-filters" role="group" aria-label="Filter projects by category">
+        <button class="filter-pill active" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="frontend">Frontend</button>
+        <button class="filter-pill" data-filter="backend">Backend</button>
+        <button class="filter-pill" data-filter="fullstack">Full Stack</button>
+        <button class="filter-pill" data-filter="opensource">Open Source</button>
+      </div>
+
+      <div class="projects-grid fade-in">
+
+        <!-- PROJECT 1: Featured (dark card) -->
+        <article class="project-card project-card--featured" data-category="fullstack frontend backend">
+          <div class="project-header">
+            <span class="project-num">01</span>
+            <div class="project-links">
+              <!-- target="_blank" opens in new tab; rel="noopener" prevents
+                   the new tab from accessing window.opener (security best practice) -->
+              <a href="#" class="project-link" target="_blank"
+                 rel="noopener noreferrer" aria-label="View Project Alpha live site">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                Live
+              </a>
+              <a href="#" class="project-link" target="_blank"
+                 rel="noopener noreferrer" aria-label="View Project Alpha on GitHub">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+                GitHub
+              </a>
+            </div>
+          </div>
+          <h3 class="project-title">Project Alpha</h3>
+          <p class="project-desc">
+            A full-stack SaaS dashboard with authentication, billing, and real-time
+            data visualization. Built from scratch to production in 6 weeks.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">Stripe</span>
+            <span class="tag">Postgres</span>
+          </div>
+          <!--
+            CASE STUDY — Level 4 addition
+            The button opens #caseStudyModal and copies in the hidden
+            .case-study-content block below it. Kept inside the same
+            <article> as its project so the two never drift out of
+            sync when cards are reordered or duplicated for new projects.
+          -->
+          <button class="case-study-btn" data-project="alpha">
+            View case study
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+          <!--
+            Structured as a 3-step numbered flow (Problem → Process → Result)
+            instead of plain stacked headings/paragraphs — reuses the same
+            numbered-circle + connecting-line language as the Experience
+            timeline, so it reads as "the site's case study format" rather
+            than a wall of text. See .cs-flow / .cs-step in style.css.
+          -->
+          <div class="case-study-content" data-project="alpha" hidden>
+            <div class="cs-progress" aria-hidden="true">
+              <span class="cs-progress-dot"></span>
+              <span class="cs-progress-dot"></span>
+              <span class="cs-progress-dot"></span>
+            </div>
+            <div class="cs-flow">
+              <div class="cs-step cs-step--problem">
+                <button type="button" class="cs-step-header" aria-expanded="false">
+                  <span class="cs-step-num"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                  <h4 class="cs-step-title">The problem</h4>
+                  <svg class="cs-step-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </button>
+                <div class="cs-step-panel-wrap">
+                  <div class="cs-step-panel-inner">
+                    <p>The client was running billing and usage tracking through a patchwork of spreadsheets and a third-party dashboard that didn't talk to their own database, so support tickets about incorrect invoices were a weekly occurrence.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cs-step cs-step--process">
+                <button type="button" class="cs-step-header" aria-expanded="false">
+                  <span class="cs-step-num"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+                  <h4 class="cs-step-title">The process</h4>
+                  <svg class="cs-step-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </button>
+                <div class="cs-step-panel-wrap">
+                  <div class="cs-step-panel-inner">
+                    <p>Designed a Postgres schema that treated usage events as the source of truth, then layered Stripe's metered billing on top so invoices generate directly from real usage instead of a manually maintained count. Built the dashboard in Next.js with server components for the data-heavy views to keep first load fast.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cs-step cs-step--result">
+                <button type="button" class="cs-step-header" aria-expanded="false">
+                  <span class="cs-step-num"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>
+                  <h4 class="cs-step-title">The result</h4>
+                  <svg class="cs-step-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </button>
+                <div class="cs-step-panel-wrap">
+                  <div class="cs-step-panel-inner">
+                    <p>Billing-related support tickets dropped to near zero after launch, and the client could finally see real-time usage per customer instead of waiting on end-of-month exports.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PROJECT 2 -->
+        <article class="project-card" data-category="backend opensource">
+          <div class="project-header">
+            <span class="project-num">02</span>
+            <div class="project-links">
+              <a href="#" class="project-link" target="_blank"
+                 rel="noopener noreferrer" aria-label="View CLI Tool on GitHub">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+                GitHub
+              </a>
+            </div>
+          </div>
+          <h3 class="project-title">Open Source CLI Tool</h3>
+          <p class="project-desc">
+            Auto-generates TypeScript types from REST API responses.
+            Picked up 400+ GitHub stars in the first month.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">TypeScript</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">CLI</span>
+          </div>
+          <button class="case-study-btn" data-project="cli">
+            View case study
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+          <div class="case-study-content" data-project="cli" hidden>
+            <div class="cs-progress" aria-hidden="true">
+              <span class="cs-progress-dot"></span>
+              <span class="cs-progress-dot"></span>
+              <span class="cs-progress-dot"></span>
+            </div>
+            <div class="cs-flow">
+              <div class="cs-step cs-step--problem">
+                <button type="button" class="cs-step-header" aria-expanded="false">
+                  <span class="cs-step-num"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                  <h4 class="cs-step-title">The problem</h4>
+                  <svg class="cs-step-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </button>
+                <div class="cs-step-panel-wrap">
+                  <div class="cs-step-panel-inner">
+                    <p>Every project on the team hand-wrote TypeScript interfaces for API responses, and they'd silently go stale the moment the backend changed a field — bugs that only showed up at runtime.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cs-step cs-step--process">
+                <button type="button" class="cs-step-header" aria-expanded="false">
+                  <span class="cs-step-num"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+                  <h4 class="cs-step-title">The process</h4>
+                  <svg class="cs-step-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </button>
+                <div class="cs-step-panel-wrap">
+                  <div class="cs-step-panel-inner">
+                    <p>Built a CLI that hits a given endpoint, infers the shape of the JSON response, and generates matching TypeScript types automatically, with a watch mode for local development. Published it as an open-source npm package with a small, dependency-light core so it'd be easy for other maintainers to audit.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cs-step cs-step--result">
+                <button type="button" class="cs-step-header" aria-expanded="false">
+                  <span class="cs-step-num"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>
+                  <h4 class="cs-step-title">The result</h4>
+                  <svg class="cs-step-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </button>
+                <div class="cs-step-panel-wrap">
+                  <div class="cs-step-panel-inner">
+                    <p>Picked up 400+ GitHub stars in its first month and got adopted by a couple of other teams outside the original project, without any marketing beyond a single Show HN-style post.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PROJECT 3 -->
+        <article class="project-card" data-category="frontend fullstack">
+          <div class="project-header">
+            <span class="project-num">03</span>
+            <div class="project-links">
+              <a href="#" class="project-link" target="_blank"
+                 rel="noopener noreferrer" aria-label="View E-commerce Platform live site">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                Live
+              </a>
+            </div>
+          </div>
+          <h3 class="project-title">E-commerce Platform</h3>
+          <p class="project-desc">
+            Headless store with custom CMS, inventory management, and payment processing.
+            Handles 500+ orders per day.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">React</span>
+            <span class="tag">Sanity</span>
+            <span class="tag">Stripe</span>
+          </div>
+          <button class="case-study-btn" data-project="ecommerce">
+            View case study
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+          <div class="case-study-content" data-project="ecommerce" hidden>
+            <div class="cs-progress" aria-hidden="true">
+              <span class="cs-progress-dot"></span>
+              <span class="cs-progress-dot"></span>
+              <span class="cs-progress-dot"></span>
+            </div>
+            <div class="cs-flow">
+              <div class="cs-step cs-step--problem">
+                <button type="button" class="cs-step-header" aria-expanded="false">
+                  <span class="cs-step-num"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                  <h4 class="cs-step-title">The problem</h4>
+                  <svg class="cs-step-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </button>
+                <div class="cs-step-panel-wrap">
+                  <div class="cs-step-panel-inner">
+                    <p>The client's existing store was locked into a template-based platform that couldn't support the custom product configurator their catalog needed, and every content change required a developer.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cs-step cs-step--process">
+                <button type="button" class="cs-step-header" aria-expanded="false">
+                  <span class="cs-step-num"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+                  <h4 class="cs-step-title">The process</h4>
+                  <svg class="cs-step-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </button>
+                <div class="cs-step-panel-wrap">
+                  <div class="cs-step-panel-inner">
+                    <p>Went headless: React storefront on the frontend, Sanity as the content layer so the client's team could edit products and pages themselves, and Stripe handling payments and subscription billing for a recurring-order option. Paid particular attention to checkout performance since that's where drop-off actually costs revenue.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cs-step cs-step--result">
+                <button type="button" class="cs-step-header" aria-expanded="false">
+                  <span class="cs-step-num"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>
+                  <h4 class="cs-step-title">The result</h4>
+                  <svg class="cs-step-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </button>
+                <div class="cs-step-panel-wrap">
+                  <div class="cs-step-panel-inner">
+                    <p>The store now handles 500+ orders per day, and the client's own team ships content and product changes without opening a ticket.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div><!-- /projects-grid -->
+    </section><!-- /projects -->
+
+
+    <!-- ══════════════════════════════════════
+         SECTION 04 — GITHUB ACTIVITY (Level 4)
+         Live data pulled client-side from the public GitHub REST API
+         (no auth token — unauthenticated requests are capped at 60/hr
+         per IP, which is plenty for a personal portfolio's traffic).
+         See initGithubStats() in main.js. Degrades to a plain
+         "view on GitHub" link if the fetch fails or rate-limits.
+    ══════════════════════════════════════ -->
+    <section id="github" aria-labelledby="github-heading">
+
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h2 id="github-heading">GitHub Activity</h2>
+      </div>
+
+      <!--
+        GITHUB_USERNAME is set once in main.js (top of initGithubStats)
+        — change it there, not here, if this template gets reused.
+      -->
+      <div class="github-card fade-in" id="githubCard">
+
+        <!-- Skeleton/loading state — shown until the fetch resolves,
+             swapped out by JS once real data (or an error) arrives -->
+        <div class="github-loading" id="githubLoading">
+          <div class="gh-skel gh-skel--avatar"></div>
+          <div class="gh-skel-lines">
+            <div class="gh-skel gh-skel--line" style="width:40%"></div>
+            <div class="gh-skel gh-skel--line" style="width:70%"></div>
+          </div>
+        </div>
+
+        <!-- Populated by JS on success; hidden (display:none) until then -->
+        <div class="github-body" id="githubBody" hidden>
+
+          <div class="github-profile">
+            <img class="github-avatar" id="githubAvatar" src="" alt="" width="56" height="56" />
+            <div>
+              <p class="github-name" id="githubName">—</p>
+              <a class="github-handle" id="githubHandle" href="#" target="_blank" rel="noopener">—</a>
+            </div>
+            <a class="btn-ghost github-follow" id="githubFollow" href="#" target="_blank" rel="noopener">
+              Follow
+            </a>
+          </div>
+
+          <!--
+            CONTRIBUTION GRAPH — Level 4.1 refinement
+            Was previously a static <img> from ghchart.rshah.org, but that
+            service only ever renders a fixed "last 12 months" image — no
+            way to narrow the range. Replaced with a custom-built calendar:
+            we fetch raw daily contribution counts as JSON from
+            github-contributions-api.jogruber.de (a free, public, no-auth
+            mirror of GitHub's contribution data — GitHub's own official
+            API only exposes this via authenticated GraphQL, which isn't
+            safe to call from a static client-side site), then render our
+            own grid of day-cells and filter it entirely in the browser.
+            See initContribGraph() / renderContribGrid() in main.js.
+          -->
+          <div class="github-contrib">
+            <div class="contrib-header">
+              <p class="github-contrib-label">Contribution activity</p>
+              <!--
+                Range filter — purely a client-side re-render, no new
+                network request. "range" values are in months, "custom"
+                reveals the two <input type="month"> pickers below.
+              -->
+              <div class="contrib-filters" role="group" aria-label="Filter contribution range">
+                <button class="contrib-filter-pill" data-range="3">3M</button>
+                <button class="contrib-filter-pill active" data-range="6">6M</button>
+                <button class="contrib-filter-pill" data-range="12">12M</button>
+                <button class="contrib-filter-pill" data-range="custom">Custom</button>
+              </div>
+            </div>
+
+            <!--
+              Shown only when "Custom" is selected. Two buttons, each
+              opening the same popover calendar below — tap "From" or
+              "To", pick a month off the grid, done. (This replaced an
+              earlier version using <select> dropdowns, which worked
+              but wasn't the "tap a button, a calendar opens" picker
+              feel being asked for.)
+            -->
+            <div class="contrib-custom-range" id="contribCustomRange" hidden>
+              <div class="contrib-range-fields-row">
+                <div class="contrib-range-field">
+                  <span class="contrib-range-label">From</span>
+                  <button type="button" class="contrib-month-btn" id="contribFromBtn"></button>
+                </div>
+                <div class="contrib-range-field">
+                  <span class="contrib-range-label">To</span>
+                  <button type="button" class="contrib-month-btn" id="contribToBtn"></button>
+                </div>
+                <button type="button" class="btn-ghost contrib-apply" id="contribApply">Apply</button>
+              </div>
+
+              <!--
+                Shared popover — whichever button (From/To) was tapped
+                sets initContribGraph()'s `activeField` in main.js, and
+                this same panel is reused for both rather than having
+                two separate calendars in the DOM.
+              -->
+              <div class="contrib-month-popover" id="contribMonthPopover" hidden>
+                <div class="contrib-month-popover-header">
+                  <button type="button" class="contrib-month-nav" id="contribYearPrev" aria-label="Previous year">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <span class="contrib-month-popover-year" id="contribPopoverYear"></span>
+                  <button type="button" class="contrib-month-nav" id="contribYearNext" aria-label="Next year">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                  </button>
+                </div>
+                <div class="contrib-month-popover-grid" id="contribPopoverGrid"></div>
+              </div>
+            </div>
+
+            <div class="github-contrib-wrap">
+              <div class="gh-skel gh-skel--contrib" id="githubContribSkeleton"></div>
+              <div class="contrib-calendar" id="contribCalendar" hidden>
+                <div class="contrib-months" id="contribMonths"></div>
+                <div class="contrib-grid" id="contribGrid"></div>
+              </div>
+            </div>
+
+            <!-- Updates on every filter change; also shows the currently
+                 tapped/hovered day's exact count (mobile has no hover, so
+                 tapping a cell is how this actually gets read on a phone) -->
+            <p class="contrib-summary" id="contribSummary" hidden></p>
+
+            <p class="github-contrib-fallback" id="githubContribFallback" hidden>
+              Live contribution graph is unavailable right now —
+              <a id="githubContribFallbackLink" href="#" target="_blank" rel="noopener">view it on GitHub</a>.
+            </p>
+          </div>
+
+          <div class="github-stats-row">
+            <div class="github-stat">
+              <span class="github-stat-num" id="githubRepos">—</span>
+              <span class="github-stat-label">Public repos</span>
+            </div>
+            <div class="github-stat">
+              <span class="github-stat-num" id="githubFollowers">—</span>
+              <span class="github-stat-label">Followers</span>
+            </div>
+            <div class="github-stat">
+              <span class="github-stat-num" id="githubStars">—</span>
+              <span class="github-stat-label">Total stars</span>
+            </div>
+          </div>
+
+          <!-- Top repos by stars — populated as a list of .github-repo rows -->
+          <div class="github-repos" id="githubRepoList" aria-label="Top repositories by stars"></div>
+
+        </div><!-- /github-body -->
+
+        <!-- Shown instead of github-body if the API call fails
+             (rate-limited, offline, username typo, etc.) -->
+        <div class="github-error" id="githubError" hidden>
+          <p>Couldn't load live GitHub stats right now.</p>
+          <a href="#" id="githubErrorLink" target="_blank" rel="noopener" class="btn-ghost">
+            View profile on GitHub
+          </a>
+        </div>
+
+      </div><!-- /github-card -->
+    </section><!-- /github -->
+
+
+    <!-- ══════════════════════════════════════
+         SECTION — TESTIMONIALS (Level 5)
+         Simple index-based carousel — one slide visible at a time via
+         the .active class (not display toggling), so the CSS opacity
+         transition has something to animate between. Wired up by
+         initTestimonialsCarousel() in main.js: prev/next arrows, dot
+         indicators, and basic touch-swipe support since this is meant
+         to be demoed on mobile.
+    ══════════════════════════════════════ -->
+    <section id="testimonials" aria-labelledby="testimonials-heading">
+
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <h2 id="testimonials-heading">What People Say</h2>
+      </div>
+
+      <div class="testimonials-carousel">
+        <div class="testimonial-track" id="testimonialsTrack">
+
+          <blockquote class="testimonial-slide">
+            <p class="testimonial-quote">
+              "Genuinely one of the most reliable people on our hackathon team —
+              picked up the backend work nobody else wanted and had it working
+              before we'd even finished arguing about the schema."
+            </p>
+            <footer class="testimonial-author">
+              <span class="testimonial-name">Placeholder Name</span>
+              <span class="testimonial-role">Hackathon teammate</span>
+            </footer>
+          </blockquote>
+
+          <blockquote class="testimonial-slide">
+            <p class="testimonial-quote">
+              "Delivered the storefront rebuild ahead of schedule and actually
+              explained the tradeoffs in plain English instead of just
+              disappearing into the code. Would work with again."
+            </p>
+            <footer class="testimonial-author">
+              <span class="testimonial-name">Placeholder Client</span>
+              <span class="testimonial-role">Freelance client</span>
+            </footer>
+          </blockquote>
+
+          <blockquote class="testimonial-slide">
+            <p class="testimonial-quote">
+              "Explains things well enough that I actually understood our own
+              codebase better after pairing with them for an afternoon."
+            </p>
+            <footer class="testimonial-author">
+              <span class="testimonial-name">Placeholder Classmate</span>
+              <span class="testimonial-role">Classmate / study group</span>
+            </footer>
+          </blockquote>
+
+        </div><!-- /testimonial-track -->
+
+        <div class="testimonials-controls">
+          <button type="button" class="testimonial-nav" id="testimonialPrev" aria-label="Previous testimonial">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div class="testimonials-dots" id="testimonialsDots"></div>
+          <button type="button" class="testimonial-nav" id="testimonialNext" aria-label="Next testimonial">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div><!-- /testimonials-carousel -->
+    </section><!-- /testimonials -->
+
+
+    <!-- ══════════════════════════════════════
+         SECTION 06 — CONTACT
+         Two-column layout: info left, form right.
+         The form submits via EmailJS (no backend required).
+         novalidate → disables native browser validation UI so our
+                      custom JS validation in main.js handles it instead
+                      (gives us full control over error messages + styling).
+    ══════════════════════════════════════ -->
+    <section id="contact" aria-labelledby="contact-heading">
+
+      <div class="section-header">
+        <span class="section-num">08</span>
+        <h2 id="contact-heading">Get in Touch</h2>
+      </div>
+
+      <div class="contact-inner fade-in">
+
+        <!-- LEFT: Intro text + social links -->
+        <div class="contact-left">
+          <p class="contact-headline">Let's build something <em>great</em> together.</p>
+          <p class="contact-sub">
+            Whether you have a project, a role to fill, or just want to talk about
+            tech — my inbox is open.
+          </p>
+
+          <!-- Social / direct contact links
+               Each aria-label provides a full description since the visible
+               text is just a URL string, not descriptive enough on its own. -->
+          <ul class="contact-social">
+
+            <li>
+              <!-- mailto: opens the user's default email client -->
+              <a href="mailto:you@email.com" aria-label="Send me an email">
+                <span class="social-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                  </svg>
+                </span>
+                you@email.com
+              </a>
+            </li>
+
+            <li>
+              <a href="https://github.com/yourusername" target="_blank"
+                 rel="noopener noreferrer" aria-label="Visit my GitHub profile">
+                <span class="social-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                  </svg>
+                </span>
+                github.com/yourusername
+              </a>
+            </li>
+
+            <li>
+              <a href="https://linkedin.com/in/yourusername" target="_blank"
+                 rel="noopener noreferrer" aria-label="Visit my LinkedIn profile">
+                <span class="social-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                    <rect x="2" y="9" width="4" height="12"/>
+                    <circle cx="4" cy="4" r="2"/>
+                  </svg>
+                </span>
+                linkedin.com/in/yourusername
+              </a>
+            </li>
+
+          </ul>
+        </div><!-- /contact-left -->
+
+        <!-- RIGHT: EmailJS-powered contact form
+             id="contactForm"   → JS targets this to attach submit handler
+             novalidate         → disables browser's built-in validation popups
+                                  so our custom JS can handle errors gracefully
+        -->
+        <form class="contact-form" id="contactForm" novalidate>
+
+          <!-- Name + Email in a 2-column row (stacks to 1 on mobile) -->
+          <div class="form-row">
+            <div class="form-group">
+              <!-- for="from_name" ties label to input for accessibility click & screen reader -->
+              <label for="from_name">Name</label>
+              <!-- name="from_name" → must match the EmailJS template variable {{from_name}} -->
+              <input type="text" id="from_name" name="from_name"
+                     placeholder="Jane Smith"
+                     required autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label for="reply_to">Email</label>
+              <!-- name="reply_to" → EmailJS uses this as the reply-to address -->
+              <input type="email" id="reply_to" name="reply_to"
+                     placeholder="jane@example.com"
+                     required autocomplete="email" />
+            </div>
+          </div>
+
+          <!-- Subject line -->
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject"
+                   placeholder="Project inquiry" required />
+          </div>
+
+          <!-- Message body — textarea allows multi-line input -->
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message"
+                      placeholder="Tell me about your project or idea..."
+                      required></textarea>
+          </div>
+
+          <!-- Submit + status feedback row -->
+          <div class="form-footer">
+
+            <!-- Submit button
+                 id="submitBtn" → JS disables this during send to prevent double-submit
+                 type="submit"  → triggers form's submit event (handled by JS) -->
+            <button type="submit" class="submit-btn" id="submitBtn">
+              <span id="btnText">Send message</span>
+              <!-- Send icon — aria-hidden, button text already describes action -->
+              <svg id="btnIcon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+
+            <!--
+              Status message shown after submit attempt.
+              role="status"    → announces content to screen readers without interrupting
+              aria-live="polite" → screen reader reads it aloud when it changes
+              JS adds .success or .error class to show/style it appropriately
+            -->
+            <span class="form-status" id="formStatus"
+                  role="status" aria-live="polite"></span>
+
+          </div><!-- /form-footer -->
+        </form><!-- /contactForm -->
+
+      </div><!-- /contact-inner -->
+    </section><!-- /contact -->
+
+  </main>
+
+
+  <!-- ══════════════════════════════════════════
+       FOOTER
+       Minimal 3-column layout: logo · copyright · stack credit
+       Wraps to single column on mobile (CSS).
+  ══════════════════════════════════════════ -->
+  <footer>
+    <!-- Repeat the logo for brand consistency at page bottom -->
+    <p class="footer-logo">
+      <span class="logo-bracket">&lt;</span>yn<span class="logo-bracket">/&gt;</span>
+    </p>
+    <p class="footer-copy">© 2025 Your Name · Crafted with care</p>
+    <!-- Brief tech credit — also useful for recruiters skimming source -->
+    <p class="footer-stack">HTML · CSS · JS</p>
+    <!--
+      VISITOR COUNTER — Level 5 addition
+      Starts hidden; initVisitorCounter() in main.js only reveals it
+      once the real count comes back successfully (or leaves it hidden
+      permanently if the free counting API is unreachable — a missing
+      visitor count just isn't worth showing an error state for).
+    -->
+    <p class="visitor-counter" id="visitorCounter" hidden></p>
+  </footer>
+
+  <!--
+    CASE STUDY MODAL — Level 4 addition
+    A single shared modal. Clicking any .case-study-btn copies the
+    matching .case-study-content block (same data-project value) into
+    #caseStudyBody — see initCaseStudyModal() in main.js. Keeps the
+    HTML for each case study inline with its project card (easy to
+    maintain) while only needing one modal DOM node.
+  -->
+  <div class="modal-overlay" id="caseStudyOverlay" hidden>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="caseStudyTitle">
+      <button class="modal-close" id="caseStudyClose" aria-label="Close case study">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <p class="modal-eyebrow">Case study</p>
+      <h3 class="modal-title" id="caseStudyTitle"></h3>
+      <div class="modal-body" id="caseStudyBody"></div>
+    </div>
+  </div>
+
+  <!--
+    COMMAND PALETTE — Level 4 addition
+    Hidden by default (the [hidden] attribute). initCommandPalette() in
+    main.js toggles it via Cmd/Ctrl+K or the #cmdkTrigger button, filters
+    .cmdk-item rows as you type, and handles Up/Down/Enter/Esc.
+    role="dialog" + aria-modal so screen readers treat it as a proper
+    modal rather than page content that happens to be on top.
+  -->
+  <div class="cmdk-overlay" id="cmdkOverlay" hidden>
+    <div class="cmdk-panel" role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="cmdk-input-row">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="M21 21l-4.3-4.3"/>
+        </svg>
+        <input type="text" id="cmdkInput" class="cmdk-input"
+               placeholder="Jump to a section or project…"
+               autocomplete="off" spellcheck="false" />
+        <kbd class="cmdk-esc">Esc</kbd>
+      </div>
+
+      <!--
+        Every row's data-href is a same-page anchor. main.js reads it
+        on Enter/click, smooth-scrolls there (native CSS scroll-behavior
+        already handles the smoothness), and closes the palette.
+        data-keywords adds extra search terms beyond the visible label.
+      -->
+      <ul class="cmdk-list" id="cmdkList">
+        <li class="cmdk-item" data-href="#hero" data-keywords="home top start">
+          <span class="cmdk-item-label">Home</span>
+          <span class="cmdk-item-hint">Section</span>
+        </li>
+        <li class="cmdk-item" data-href="#achievements" data-keywords="badges milestones certifications">
+          <span class="cmdk-item-label">Achievements</span>
+          <span class="cmdk-item-hint">Section</span>
+        </li>
+        <li class="cmdk-item" data-href="#skills" data-keywords="frontend backend database tools stack">
+          <span class="cmdk-item-label">Skills</span>
+          <span class="cmdk-item-hint">Section</span>
+        </li>
+        <li class="cmdk-item" data-href="#experience" data-keywords="work jobs history timeline">
+          <span class="cmdk-item-label">Experience</span>
+          <span class="cmdk-item-hint">Section</span>
+        </li>
+        <li class="cmdk-item" data-href="#projects" data-keywords="work portfolio case study">
+          <span class="cmdk-item-label">Projects</span>
+          <span class="cmdk-item-hint">Section</span>
+        </li>
+        <li class="cmdk-item" data-href="#github" data-keywords="repos stars followers code activity">
+          <span class="cmdk-item-label">GitHub Activity</span>
+          <span class="cmdk-item-hint">Section</span>
+        </li>
+        <li class="cmdk-item" data-href="#testimonials" data-keywords="reviews quotes recommendations">
+          <span class="cmdk-item-label">Testimonials</span>
+          <span class="cmdk-item-hint">Section</span>
+        </li>
+        <li class="cmdk-item" data-href="#contact" data-keywords="email message hire talk">
+          <span class="cmdk-item-label">Contact</span>
+          <span class="cmdk-item-hint">Section</span>
+        </li>
+        <li class="cmdk-item" data-filter="theme-toggle" data-keywords="dark light mode theme">
+          <span class="cmdk-item-label">Toggle dark / light mode</span>
+          <span class="cmdk-item-hint">Action</span>
+        </li>
+      </ul>
+
+      <p class="cmdk-empty" id="cmdkEmpty" hidden>No matches — try a different word.</p>
+    </div>
+  </div>
+
+  <!--
+    CUSTOM CURSOR LABEL — Level 3 addition
+    A single floating pill that follows the pointer and reads "View →"
+    while hovering a .project-card. Positioned/shown entirely by JS
+    (see initCustomCursor in main.js). aria-hidden because it's purely
+    decorative — the underlying card/link already describes the action.
+    Only activated on fine-pointer (mouse) devices; touch devices never
+    see it, so it never gets in the way on mobile.
+  -->
+  <div class="cursor-label" id="cursorLabel" aria-hidden="true">View project</div>
+
+  <!--
+    main.js loaded at end of <body> (not in <head>) for two reasons:
+    1. DOM is fully parsed before the script runs — no need for DOMContentLoaded workarounds
+    2. Page renders visually before JS is parsed — faster perceived load time
+    Note: EmailJS SDK IS in <head> because main.js calls emailjs.init() immediately on load.
+  -->
+  <script src="main.js"></script>
+
+</body>
+</html>
