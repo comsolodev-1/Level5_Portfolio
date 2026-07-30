@@ -44,7 +44,7 @@
      emailjs.com → Email Templates → Create New
      To email:  {{reply_to}}      ← THIS is what sends it to the visitor's inbox
      From name: Your Name
-     Subject:   Thank you for reaching out, {{from_name}} 👋
+     Subject:   Thank you for reaching out, {{from_name}} 
      Body:      Paste the HTML from autoreply-template.html
      Save → copy Template ID
 
