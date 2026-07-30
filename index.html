@@ -426,10 +426,23 @@
       <div class="certifications-grid">
 
         <div class="cert-card">
-          <div class="cert-icon" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="8" r="6"/>
-              <path d="M8.7 13.5L7 22l5-3 5 3-1.7-8.5"/>
+          <!--
+            Drawn certificate illustration (document + ribbon/seal),
+            not a stock photo — a placeholder photo pulled from some
+            third-party image service risked the same "quietly stops
+            working" problem the visitor counter hit (that service had
+            actually shut down). This is inline SVG, so it can never
+            404 or rate-limit; it just always renders.
+          -->
+          <div class="cert-illustration" aria-hidden="true">
+            <svg width="56" height="56" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="8" y="5" width="36" height="46" rx="2"/>
+              <line x1="15" y1="15" x2="37" y2="15"/>
+              <line x1="15" y1="21" x2="37" y2="21"/>
+              <line x1="15" y1="27" x2="30" y2="27"/>
+              <circle cx="45" cy="41" r="10" fill="currentColor" fill-opacity="0.08"/>
+              <circle cx="45" cy="41" r="7"/>
+              <path d="M41.5 47l-3 9 6.5-4 6.5 4-3-9"/>
             </svg>
           </div>
           <div class="cert-info">
@@ -445,10 +458,23 @@
         </div>
 
         <div class="cert-card">
-          <div class="cert-icon" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="8" r="6"/>
-              <path d="M8.7 13.5L7 22l5-3 5 3-1.7-8.5"/>
+          <!--
+            Drawn certificate illustration (document + ribbon/seal),
+            not a stock photo — a placeholder photo pulled from some
+            third-party image service risked the same "quietly stops
+            working" problem the visitor counter hit (that service had
+            actually shut down). This is inline SVG, so it can never
+            404 or rate-limit; it just always renders.
+          -->
+          <div class="cert-illustration" aria-hidden="true">
+            <svg width="56" height="56" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="8" y="5" width="36" height="46" rx="2"/>
+              <line x1="15" y1="15" x2="37" y2="15"/>
+              <line x1="15" y1="21" x2="37" y2="21"/>
+              <line x1="15" y1="27" x2="30" y2="27"/>
+              <circle cx="45" cy="41" r="10" fill="currentColor" fill-opacity="0.08"/>
+              <circle cx="45" cy="41" r="7"/>
+              <path d="M41.5 47l-3 9 6.5-4 6.5 4-3-9"/>
             </svg>
           </div>
           <div class="cert-info">
@@ -1358,13 +1384,21 @@
             </p>
             <footer class="testimonial-author">
               <!--
-                Placeholder avatar via ui-avatars.com — generates a plain
-                initials-on-a-circle image (no fake stock photo pretending
-                to be a real person, just an abstract placeholder) using
-                the name below. Swap the `name=` param — or better, the
-                whole src, to a real photo — once this is a real quote.
+                Generic silhouette icon, not a photo — deliberately so.
+                Pairing a real (or real-looking) human photo with a
+                fabricated name + quote is the "fake review" pattern,
+                and that risk doesn't go away just because it's meant
+                to be swapped later — placeholders have a way of
+                slipping into production. Replace this whole <span>
+                with a real <img src="..."> once this is a real quote
+                from a real person.
               -->
-              <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=Placeholder+Name&background=E4E4E7&color=18181B&size=80&bold=true" alt="" width="44" height="44" loading="lazy" />
+              <span class="testimonial-avatar" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
               <span class="testimonial-author-text">
                 <span class="testimonial-name">Placeholder Name</span>
                 <span class="testimonial-role">Hackathon teammate</span>
@@ -1379,7 +1413,12 @@
               disappearing into the code. Would work with again."
             </p>
             <footer class="testimonial-author">
-              <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=Placeholder+Client&background=E4E4E7&color=18181B&size=80&bold=true" alt="" width="44" height="44" loading="lazy" />
+              <span class="testimonial-avatar" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
               <span class="testimonial-author-text">
                 <span class="testimonial-name">Placeholder Client</span>
                 <span class="testimonial-role">Freelance client</span>
@@ -1393,7 +1432,12 @@
               codebase better after pairing with them for an afternoon."
             </p>
             <footer class="testimonial-author">
-              <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=Placeholder+Classmate&background=E4E4E7&color=18181B&size=80&bold=true" alt="" width="44" height="44" loading="lazy" />
+              <span class="testimonial-avatar" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
               <span class="testimonial-author-text">
                 <span class="testimonial-name">Placeholder Classmate</span>
                 <span class="testimonial-role">Classmate / study group</span>
