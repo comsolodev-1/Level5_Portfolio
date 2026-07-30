@@ -354,40 +354,117 @@
         <h2 id="achievements-heading">Achievements</h2>
       </div>
 
+      <!--
+        Icons are inline SVG (same stroke-based style as every other
+        icon on this page) instead of emoji — emoji render inconsistently
+        across OSes/browsers and read as less polished on a professional
+        portfolio.
+      -->
       <div class="achievements-strip">
 
         <div class="achievement-badge">
-          <div class="achievement-icon" aria-hidden="true">🔥</div>
+          <div class="achievement-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+            </svg>
+          </div>
           <h3 class="achievement-title">100 Days of Code</h3>
           <p class="achievement-desc">Shipped something and posted about it every day for over 3 months straight.</p>
         </div>
 
         <div class="achievement-badge">
-          <div class="achievement-icon" aria-hidden="true">🌱</div>
+          <div class="achievement-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" y1="3" x2="6" y2="15"/>
+              <circle cx="18" cy="6" r="3"/>
+              <circle cx="6" cy="18" r="3"/>
+              <path d="M18 9a9 9 0 0 1-9 9"/>
+            </svg>
+          </div>
           <h3 class="achievement-title">Open Source Contributor</h3>
           <p class="achievement-desc">Published a CLI tool as open source — see the CLI Tool case study below.</p>
         </div>
 
         <div class="achievement-badge">
-          <div class="achievement-icon" aria-hidden="true">🚀</div>
+          <div class="achievement-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v6M12 22v-6M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M2 12h6M16 12h6M4.93 19.07l4.24-4.24M14.83 9.17l4.24-4.24"/>
+            </svg>
+          </div>
           <h3 class="achievement-title">4 Portfolio Iterations</h3>
           <p class="achievement-desc">Rebuilt this site top-to-bottom four times, chasing a genuinely better version each time.</p>
         </div>
 
         <div class="achievement-badge">
-          <div class="achievement-icon" aria-hidden="true">🎓</div>
-          <h3 class="achievement-title">Certified — [Add yours]</h3>
-          <p class="achievement-desc">Swap this for a real certification name once you've got one to show.</p>
-        </div>
-
-        <div class="achievement-badge">
-          <div class="achievement-icon" aria-hidden="true">⚡</div>
+          <div class="achievement-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+          </div>
           <h3 class="achievement-title">Hackathon Ready</h3>
           <p class="achievement-desc">Missed my first hackathon window — used the momentum to level up this portfolio instead.</p>
         </div>
 
       </div><!-- /achievements-strip -->
     </section><!-- /achievements -->
+
+
+    <!-- ══════════════════════════════════════
+         SECTION — CERTIFICATIONS (Level 5)
+         Structured differently from Achievements on purpose: these are
+         formal, verifiable credentials (issuer + date + optional link),
+         not quick milestone badges — so they get their own section
+         instead of being folded into the achievements strip.
+    ══════════════════════════════════════ -->
+    <section id="certifications" aria-labelledby="certifications-heading">
+
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2 id="certifications-heading">Certifications</h2>
+      </div>
+
+      <div class="certifications-grid">
+
+        <div class="cert-card">
+          <div class="cert-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6"/>
+              <path d="M8.7 13.5L7 22l5-3 5 3-1.7-8.5"/>
+            </svg>
+          </div>
+          <div class="cert-info">
+            <h3 class="cert-title">[Add your certification]</h3>
+            <p class="cert-issuer">Issuing organization · <span class="cert-date">2025</span></p>
+          </div>
+          <a href="#" class="cert-link" target="_blank" rel="noopener">
+            View credential
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 17L17 7M7 7h10v10"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="cert-card">
+          <div class="cert-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6"/>
+              <path d="M8.7 13.5L7 22l5-3 5 3-1.7-8.5"/>
+            </svg>
+          </div>
+          <div class="cert-info">
+            <h3 class="cert-title">[Add your certification]</h3>
+            <p class="cert-issuer">Issuing organization · <span class="cert-date">2025</span></p>
+          </div>
+          <a href="#" class="cert-link" target="_blank" rel="noopener">
+            View credential
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 17L17 7M7 7h10v10"/>
+            </svg>
+          </a>
+        </div>
+
+      </div><!-- /certifications-grid -->
+    </section><!-- /certifications -->
 
 
     <!-- ══════════════════════════════════════
@@ -399,7 +476,7 @@
 
       <!-- Section header: numbered label + heading -->
       <div class="section-header">
-        <span class="section-num">03</span>
+        <span class="section-num">04</span>
         <h2 id="skills-heading">Skills &amp; Stack</h2>
       </div>
 
@@ -622,7 +699,7 @@
     <section id="experience" aria-labelledby="exp-heading">
 
       <div class="section-header">
-        <span class="section-num">04</span>
+        <span class="section-num">05</span>
         <h2 id="exp-heading">Experience</h2>
       </div>
 
@@ -764,7 +841,7 @@
     <section id="projects" aria-labelledby="projects-heading">
 
       <div class="section-header">
-        <span class="section-num">05</span>
+        <span class="section-num">06</span>
         <h2 id="projects-heading">Projects</h2>
       </div>
 
@@ -1098,7 +1175,7 @@
     <section id="github" aria-labelledby="github-heading">
 
       <div class="section-header">
-        <span class="section-num">06</span>
+        <span class="section-num">07</span>
         <h2 id="github-heading">GitHub Activity</h2>
       </div>
 
@@ -1266,7 +1343,7 @@
     <section id="testimonials" aria-labelledby="testimonials-heading">
 
       <div class="section-header">
-        <span class="section-num">07</span>
+        <span class="section-num">08</span>
         <h2 id="testimonials-heading">What People Say</h2>
       </div>
 
@@ -1280,8 +1357,18 @@
               before we'd even finished arguing about the schema."
             </p>
             <footer class="testimonial-author">
-              <span class="testimonial-name">Placeholder Name</span>
-              <span class="testimonial-role">Hackathon teammate</span>
+              <!--
+                Placeholder avatar via ui-avatars.com — generates a plain
+                initials-on-a-circle image (no fake stock photo pretending
+                to be a real person, just an abstract placeholder) using
+                the name below. Swap the `name=` param — or better, the
+                whole src, to a real photo — once this is a real quote.
+              -->
+              <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=Placeholder+Name&background=E4E4E7&color=18181B&size=80&bold=true" alt="" width="44" height="44" loading="lazy" />
+              <span class="testimonial-author-text">
+                <span class="testimonial-name">Placeholder Name</span>
+                <span class="testimonial-role">Hackathon teammate</span>
+              </span>
             </footer>
           </blockquote>
 
@@ -1292,8 +1379,11 @@
               disappearing into the code. Would work with again."
             </p>
             <footer class="testimonial-author">
-              <span class="testimonial-name">Placeholder Client</span>
-              <span class="testimonial-role">Freelance client</span>
+              <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=Placeholder+Client&background=E4E4E7&color=18181B&size=80&bold=true" alt="" width="44" height="44" loading="lazy" />
+              <span class="testimonial-author-text">
+                <span class="testimonial-name">Placeholder Client</span>
+                <span class="testimonial-role">Freelance client</span>
+              </span>
             </footer>
           </blockquote>
 
@@ -1303,8 +1393,11 @@
               codebase better after pairing with them for an afternoon."
             </p>
             <footer class="testimonial-author">
-              <span class="testimonial-name">Placeholder Classmate</span>
-              <span class="testimonial-role">Classmate / study group</span>
+              <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=Placeholder+Classmate&background=E4E4E7&color=18181B&size=80&bold=true" alt="" width="44" height="44" loading="lazy" />
+              <span class="testimonial-author-text">
+                <span class="testimonial-name">Placeholder Classmate</span>
+                <span class="testimonial-role">Classmate / study group</span>
+              </span>
             </footer>
           </blockquote>
 
@@ -1334,7 +1427,7 @@
     <section id="contact" aria-labelledby="contact-heading">
 
       <div class="section-header">
-        <span class="section-num">08</span>
+        <span class="section-num">09</span>
         <h2 id="contact-heading">Get in Touch</h2>
       </div>
 
@@ -1498,8 +1591,78 @@
       permanently if the free counting API is unreachable — a missing
       visitor count just isn't worth showing an error state for).
     -->
-    <p class="visitor-counter" id="visitorCounter" hidden></p>
+    <!--
+      VISITOR COUNTER — Level 5 addition (rebuilt)
+      Was originally a fetch() call to countapi.xyz — that service has
+      actually shut down, which is exactly why nothing ever appeared
+      (our own error-handling was correctly hiding it, just against a
+      dead API). Rebuilt as a plain <img> pointed at visitorbadge.io
+      instead: no fetch, no JSON, no CORS to worry about — same
+      "free public image service" pattern as the skillicons/ghchart
+      logos elsewhere on this page, which have been solid so far.
+    -->
+    <img class="visitor-counter" id="visitorCounter"
+         alt="Visitor count"
+         src="https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fcomsolodev-1.github.io%2FLevel4_Portfolio%2F&labelColor=%23252525&countColor=%23636363&style=flat&labelStyle=none"
+         hidden />
+    <!-- ↑ the `path=` value is your live site URL, URL-encoded. Update
+         it here if you rename the repo/site — otherwise it'll keep
+         counting hits for the OLD url instead of wherever this
+         actually ends up living. (main.js just wires up show/hide,
+         the URL itself lives only here — one source of truth.) -->
   </footer>
+
+  <!--
+    RESUME DOCUMENT — Level 5 rebuild
+    Completely invisible on-screen ([hidden] below) — this only ever
+    renders when @media print is active, which only happens via the
+    "Download Resume" button's window.print() call (or a manual
+    Ctrl/Cmd+P, which will produce the same result).
+
+    It is NOT a copy of the marketing page — it's a proper single-column
+    Harvard-format résumé (Name/contact header → Education → Experience
+    → Skills → Certifications), built from scratch as its own document
+    and then POPULATED with real content read out of the live page by
+    populateResumeDocument() in main.js, so the résumé can never drift
+    out of sync with what the site actually says about you.
+
+    Education has no source section on the live page to pull from, so
+    that one block is edited directly here rather than generated —
+    everything else below it is populated by JS.
+  -->
+  <div id="resumeDocument" hidden>
+    <header class="resume-header">
+      <h1 id="resumeName">Your Name</h1>
+      <p class="resume-role" id="resumeRole">Full Stack Developer</p>
+      <p class="resume-contact" id="resumeContact"></p>
+    </header>
+
+    <section class="resume-section">
+      <h2>Education</h2>
+      <div class="resume-entry">
+        <div class="resume-entry-row">
+          <strong>[Add your school / university]</strong>
+          <span>[Add years attended]</span>
+        </div>
+        <p class="resume-entry-sub">[Add degree and field of study]</p>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <h2>Experience</h2>
+      <div id="resumeExperience"></div>
+    </section>
+
+    <section class="resume-section">
+      <h2>Skills</h2>
+      <p id="resumeSkills"></p>
+    </section>
+
+    <section class="resume-section" id="resumeCertSection">
+      <h2>Certifications</h2>
+      <div id="resumeCertifications"></div>
+    </section>
+  </div>
 
   <!--
     CASE STUDY MODAL — Level 4 addition
@@ -1556,8 +1719,12 @@
           <span class="cmdk-item-label">Home</span>
           <span class="cmdk-item-hint">Section</span>
         </li>
-        <li class="cmdk-item" data-href="#achievements" data-keywords="badges milestones certifications">
+        <li class="cmdk-item" data-href="#achievements" data-keywords="badges milestones">
           <span class="cmdk-item-label">Achievements</span>
+          <span class="cmdk-item-hint">Section</span>
+        </li>
+        <li class="cmdk-item" data-href="#certifications" data-keywords="credentials courses">
+          <span class="cmdk-item-label">Certifications</span>
           <span class="cmdk-item-hint">Section</span>
         </li>
         <li class="cmdk-item" data-href="#skills" data-keywords="frontend backend database tools stack">

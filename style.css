@@ -919,6 +919,123 @@ section {
 }
 
 /* ────────────────────────────────────────────────
+   LEVEL 5 — CERTIFICATIONS
+   ──────────────────────────────────────────────── */
+/*
+  Mobile-first: single column by default (cert-card is a full-width
+  block), explicitly promoted to 2 columns at the tablet+ breakpoint
+  further down. Not relying on auto-fit/minmax here — with only ever
+  2-3 certs, auto-fit can leave one card oddly stretched full-width
+  next to nothing; an explicit breakpoint keeps the grid intentional.
+*/
+.certifications-grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 12px;
+}
+
+.cert-card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  gap: 14px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.1rem 1.25rem;
+}
+
+.cert-icon {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--surface-2);
+  color: var(--text-primary);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.cert-info {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  min-width: 0; /* lets long cert titles ellipsis/wrap instead of overflowing the flex row */
+}
+
+.cert-title {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.cert-issuer {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.cert-date {
+  font-family: var(--font-mono);
+  color: var(--text-faint);
+}
+
+.cert-link {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  -webkit-transition: color 0.2s ease, border-color 0.2s ease;
+          transition: color 0.2s ease, border-color 0.2s ease;
+  /* On mobile, a card is already a single tappable column, so let the
+     link drop below the title/issuer rather than squeezing into the
+     same row (prevented via flex-wrap on .cert-card at the mobile
+     breakpoint further down). */
+}
+
+.cert-link:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+/* Tablet and up: promote to a real 2-column grid */
+@media screen and (min-width: 640px) {
+  .certifications-grid {
+    display: -ms-grid;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+}
+
+/* ────────────────────────────────────────────────
    8. SKILLS
    ──────────────────────────────────────────────── */
 /*
@@ -1771,6 +1888,25 @@ section {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 12px;
+}
+
+.testimonial-avatar {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+}
+
+.testimonial-author-text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -2197,10 +2333,11 @@ footer {
 }
 
 .visitor-counter {
-  font-size: 12px;
-  color: var(--text-faint);
-  font-family: var(--font-mono);
-  letter-spacing: 0.04em;
+  height: 20px;
+  width: auto;
+  /* Badge image ships its own colors baked in (see the labelColor/
+     countColor query params on the <img> itself in index.html) —
+     nothing theme-dependent to set here beyond size/alignment. */
 }
 
 /* ────────────────────────────────────────────────
@@ -2446,6 +2583,25 @@ footer {
   .hero-badge { font-size: 10px; }
 
   .stat-num { font-size: 1.2rem; }
+
+  /* Cert card: let the "View credential" link drop to its own line
+     below title/issuer instead of squeezing into the same row as the
+     icon on a narrow screen. */
+  .cert-card {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+  .cert-link {
+    margin-left: calc(38px + 14px); /* aligns under cert-info, past the icon */
+  }
+
+  /* Achievement badges: full-width single column rather than the
+     2-up wrap flex-basis:200px produces on a narrow phone. */
+  .achievement-badge {
+    -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+    max-width: none;
+  }
 }
 
 /* ── Very small (≤ 360px) ── */
@@ -3510,35 +3666,114 @@ footer {
   }
 }
 
-/* ── Print (also used by the "Download Resume" button via window.print()) ── */
+/* ── Print (also what "Download Resume" produces via window.print()) ── */
 @media print {
   /*
-    DELIBERATE: no forced `body { background: white; color: black }`
-    here. A typical print stylesheet does that so paper printouts don't
-    waste ink on a dark background — but this is also how "Download
-    Resume" generates its PDF, and the whole point there was "make it
-    match whichever theme I'm browsing in". So [data-theme]'s own
-    colors are left alone; if you print this to actual paper in dark
-    mode, that's a real trade-off you're accepting on purpose.
+    Hide the ENTIRE live page and show only #resumeDocument. A résumé
+    isn't a screenshot of the marketing site — it's its own document —
+    so rather than stripping chrome off the live page (the old
+    approach), everything gets hidden except the purpose-built résumé
+    template, which populateResumeDocument() in main.js fills in from
+    the page's real content before this ever runs.
   */
-  nav, .noise, .hero-bg-text, .scroll-hint, .hamburger,
-  .cmdk-trigger, .theme-toggle, .cursor-label,
-  .cmdk-overlay, .modal-overlay,
-  .project-filters, .case-study-btn,
-  #github,
-  .contrib-filters, .contrib-custom-range, .contrib-month-popover,
-  .testimonial-nav, .testimonials-dots,
-  .visitor-counter,
-  #downloadResumeBtn,
-  .exp-toggle
-  { display: none !important; }
+  body > *:not(#resumeDocument) {
+    display: none !important;
+  }
 
-  main { padding-top: 0; }
-  section { padding: 1.25rem 0; page-break-inside: avoid; }
+  #resumeDocument {
+    display: block !important;
+  }
+}
 
-  /* Achievement lists (Experience section): the toggle button itself
-     is hidden above, so force the content open — a resume PDF should
-     show everything, not the collapsed "tap to reveal" state that
-     only makes sense on an interactive page. */
-  .exp-achievements-wrap { grid-template-rows: 1fr !important; }
+/*
+  RÉSUMÉ DOCUMENT — Harvard format
+  ─────────────────────────────────────────────────────────────────
+  Deliberately its own tiny design system, independent of the rest of
+  this stylesheet: serif type, black text on white, no cards/borders/
+  rounded corners — a résumé being read by a recruiter (or an ATS
+  parser) shouldn't depend on, or inherit, whatever [data-theme] the
+  site happened to be in when it was generated. This is invisible on
+  screen ([hidden] in the HTML) and only ever rendered by the print
+  media query above.
+*/
+#resumeDocument {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color: #000;
+  background: #fff;
+  max-width: 7.5in;
+  margin: 0 auto;
+  padding: 0.4in 0.3in;
+  font-size: 11pt;
+  line-height: 1.45;
+}
+
+.resume-header {
+  text-align: center;
+  margin-bottom: 14pt;
+  padding-bottom: 10pt;
+  border-bottom: 1.5pt solid #000;
+}
+
+.resume-header h1 {
+  font-size: 20pt;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 3pt;
+}
+
+.resume-role {
+  font-size: 11pt;
+  font-style: italic;
+  margin-bottom: 5pt;
+}
+
+.resume-contact {
+  font-size: 9.5pt;
+}
+
+.resume-section {
+  margin-bottom: 12pt;
+}
+
+.resume-section h2 {
+  font-size: 11pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 0.75pt solid #000;
+  padding-bottom: 2pt;
+  margin-bottom: 7pt;
+}
+
+.resume-entry {
+  margin-bottom: 9pt;
+  page-break-inside: avoid;
+}
+
+.resume-entry-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10pt;
+  font-size: 10.5pt;
+}
+
+.resume-entry-sub {
+  font-style: italic;
+  font-size: 10pt;
+  margin-bottom: 3pt;
+}
+
+.resume-entry ul {
+  margin: 4pt 0 0;
+  padding-left: 14pt;
+}
+
+.resume-entry li {
+  font-size: 10pt;
+  margin-bottom: 2pt;
+}
+
+#resumeSkills {
+  font-size: 10pt;
 }

@@ -1256,22 +1256,134 @@ function initHeroParallax() {
 
 
 /* ═══════════════════════════════════════════════════════════════
-   LEVEL 5 — DOWNLOAD RESUME (via window.print())
+   LEVEL 5 — DOWNLOAD RESUME (real generated CV, not a page printout)
    ───────────────────────────────────────────────────────────────
-   No PDF library, no server render — the browser's own "Print → Save
-   as PDF" already does exactly this. The @media print rules in
-   style.css strip out interactive-only chrome (nav, buttons, popovers,
-   the download button itself) and force any collapsed accordions open,
-   but deliberately do NOT force a white background — so the resulting
-   PDF matches whichever [data-theme] was active when you clicked it.
+   This used to just call window.print() on the live marketing page —
+   but a résumé isn't a screenshot of a portfolio site, it's its own
+   document. So instead: #resumeDocument (in index.html) is a proper
+   single-column Harvard-format résumé template, hidden on-screen at
+   all times, that populateResumeDocument() fills in by reading the
+   REAL content already sitting in the page (name, role, contact links,
+   each experience entry + its achievements, every skill, every
+   certification) — so the résumé can't silently drift out of sync
+   with what the site itself says.
+
+   No PDF library involved — window.print() (browser's native
+   "Save as PDF") still does the actual export. The @media print rules
+   in style.css hide the entire live page and show ONLY #resumeDocument,
+   styled as a plain black-on-white document regardless of the site's
+   current dark/light theme — a résumé being read by a recruiter or an
+   ATS system shouldn't depend on which mode you happened to be
+   browsing in.
    ═══════════════════════════════════════════════════════════════ */
 function initResumeDownload() {
   const btn = document.getElementById('downloadResumeBtn');
   if (!btn) return;
 
+  // Populated once at page load — the source content (experience,
+  // skills, etc.) is static, so there's no need to re-read the DOM
+  // on every click.
+  populateResumeDocument();
+
   btn.addEventListener('click', () => {
     window.print();
   });
+}
+
+function populateResumeDocument() {
+  const nameSource = document.getElementById('hero-name');
+  const roleSource = document.querySelector('.hero-role');
+  const resumeName = document.getElementById('resumeName');
+  const resumeRole = document.getElementById('resumeRole');
+
+  if (nameSource && resumeName) {
+    resumeName.textContent = nameSource.textContent.replace(/\s+/g, ' ').trim();
+  }
+  if (roleSource && resumeRole) {
+    resumeRole.textContent = roleSource.textContent.replace(/\s+/g, ' ').trim();
+  }
+
+  // Contact line — reuses the visible link text already in the Contact
+  // section (email address, github.com/username, linkedin.com/in/username)
+  // rather than re-typing any of it here.
+  const contactLinks = document.querySelectorAll('.contact-social a');
+  const resumeContact = document.getElementById('resumeContact');
+  if (resumeContact) {
+    resumeContact.textContent = Array.from(contactLinks)
+      .map(a => a.textContent.replace(/\s+/g, ' ').trim())
+      .join('   ·   ');
+  }
+
+  // Experience — one .resume-entry per .exp-item, achievements list
+  // reused directly; falls back to the summary paragraph as a single
+  // bullet if a role has no itemized achievements yet.
+  const resumeExperience = document.getElementById('resumeExperience');
+  if (resumeExperience) {
+    const expItems = document.querySelectorAll('.exp-item');
+    resumeExperience.innerHTML = Array.from(expItems).map(item => {
+      // .exp-role's first text node only — excludes the nested
+      // "Current" <span> tag so it doesn't get glued onto the title.
+      const roleNode = item.querySelector('.exp-role');
+      const role = roleNode ? roleNode.childNodes[0].textContent.replace(/\s+/g, ' ').trim() : '';
+      const company = item.querySelector('.exp-company')?.textContent.replace(/\s+/g, ' ').trim() || '';
+      const period = item.querySelector('.exp-period')?.textContent.replace(/\s+/g, ' ').trim() || '';
+      const achievementEls = item.querySelectorAll('.exp-achievements li');
+      const desc = item.querySelector('.exp-desc')?.textContent.replace(/\s+/g, ' ').trim() || '';
+
+      const bullets = achievementEls.length
+        ? Array.from(achievementEls).map(li => li.textContent.replace(/\s+/g, ' ').trim())
+        : [desc];
+
+      return `
+        <div class="resume-entry">
+          <div class="resume-entry-row">
+            <strong>${escapeResumeText(role)}</strong>
+            <span>${escapeResumeText(period)}</span>
+          </div>
+          <p class="resume-entry-sub">${escapeResumeText(company)}</p>
+          <ul>${bullets.map(b => `<li>${escapeResumeText(b)}</li>`).join('')}</ul>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Skills — grouped by category, flattened to "Category: item, item, item"
+  // lines rather than the site's visual icon-row treatment, which has
+  // no equivalent in a plain-text document.
+  const resumeSkills = document.getElementById('resumeSkills');
+  if (resumeSkills) {
+    const skillCards = document.querySelectorAll('.skill-card');
+    resumeSkills.textContent = Array.from(skillCards).map(card => {
+      const category = card.querySelector('.skill-category')?.textContent.trim() || '';
+      const names = Array.from(card.querySelectorAll('.skill-row-name')).map(s => s.textContent.trim());
+      return `${category}: ${names.join(', ')}`;
+    }).join('   |   ');
+  }
+
+  // Certifications — whole section hides itself if there are none yet,
+  // rather than printing an empty "Certifications" heading.
+  const resumeCertifications = document.getElementById('resumeCertifications');
+  const resumeCertSection = document.getElementById('resumeCertSection');
+  if (resumeCertifications && resumeCertSection) {
+    const certCards = document.querySelectorAll('.cert-card');
+    resumeCertifications.innerHTML = Array.from(certCards).map(card => {
+      const title = card.querySelector('.cert-title')?.textContent.trim() || '';
+      const issuer = card.querySelector('.cert-issuer')?.textContent.replace(/\s+/g, ' ').trim() || '';
+      return `<div class="resume-entry-row"><strong>${escapeResumeText(title)}</strong><span>${escapeResumeText(issuer)}</span></div>`;
+    }).join('');
+
+    resumeCertSection.style.display = certCards.length ? '' : 'none';
+  }
+}
+
+// Minimal HTML-escaping before injecting page-sourced text via
+// innerHTML — the content originates from this same site's own DOM
+// rather than user input, but it costs nothing to be defensive here.
+function escapeResumeText(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 
@@ -1363,38 +1475,24 @@ function initAchievementsReveal() {
 /* ═══════════════════════════════════════════════════════════════
    LEVEL 5 — VISITOR COUNTER
    ───────────────────────────────────────────────────────────────
-   Uses countapi.xyz — a free, no-signup, no-auth hit-counter API (the
-   same "free public service, zero backend" pattern as skillicons.dev,
-   ghchart, and the contributions API elsewhere on this page). Every
-   page load calls /hit/{namespace}/{key}, which atomically increments
-   a counter server-side and returns the new total — so this is a real
-   shared count across every visitor, not something faked locally.
-
-   NAMESPACE should be unique to this site (see the constant below) —
-   countapi.xyz namespaces are global and first-come-first-served, so
-   reusing a generic key risks colliding with someone else's counter.
+   The <img> in the footer already points at visitorbadge.io — a free,
+   no-signup image-based hit counter (same pattern as the skillicons/
+   ghchart images elsewhere). This function just reveals it once it's
+   actually loaded, and keeps it hidden if the service is ever down —
+   same "fail silently, don't show a broken state" approach used for
+   the GitHub contribution graph.
    ═══════════════════════════════════════════════════════════════ */
 function initVisitorCounter() {
   const el = document.getElementById('visitorCounter');
   if (!el) return;
 
-  const NAMESPACE = 'comsolodev-1-portfolio-level4'; // change if forking this template
-  const KEY = 'visits';
+  el.addEventListener('load', () => { el.hidden = false; });
+  el.addEventListener('error', () => { el.hidden = true; });
 
-  fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`)
-    .then(r => {
-      if (!r.ok) throw new Error('counter fetch failed');
-      return r.json();
-    })
-    .then(data => {
-      const count = data.value ?? null;
-      if (count === null) throw new Error('no count in response');
-      el.textContent = `👀 ${count.toLocaleString()} visitor${count === 1 ? '' : 's'}`;
-      el.hidden = false;
-    })
-    .catch(() => {
-      // Fails silently — a missing visitor count isn't worth showing an
-      // error state for for something this low-stakes; it just stays hidden.
-      el.hidden = true;
-    });
+  // If the image was already served from cache before this listener
+  // attached, `load` may never fire — .complete + naturalWidth catches
+  // that case and reveals it immediately instead of staying hidden forever.
+  if (el.complete && el.naturalWidth > 0) {
+    el.hidden = false;
+  }
 }
