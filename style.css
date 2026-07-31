@@ -3754,7 +3754,20 @@ footer {
 }
 
 .resume-section {
-  margin-bottom: 8pt;
+  /*
+    THE BUG: .resume-section elements are real <section> tags, and this
+    stylesheet has a global `section { padding: clamp(3.5rem, 8vw,
+    6.5rem) ... }` rule meant for the live page's main content sections
+    (Hero, Skills, Experience, etc.) — which, being a plain tag
+    selector, was also silently applying to these résumé sections and
+    adding up to 6.5rem (104px) of padding above AND below each one.
+    That's the "big gaps" bug. Explicitly zeroing everything the global
+    rule sets is what actually fixes it — a class selector like this
+    one is more specific than a tag selector, so these resets reliably win.
+  */
+  max-width: none;
+  padding: 0;
+  margin: 0 0 8pt;
 }
 
 .resume-section h2 {
@@ -3789,6 +3802,7 @@ footer {
 .resume-entry ul {
   margin: 3pt 0 0;
   padding-left: 13pt;
+  list-style: disc; /* global `ul, ol { list-style: none }` reset strips these otherwise */
 }
 
 .resume-entry li {
