@@ -44,7 +44,7 @@
      emailjs.com → Email Templates → Create New
      To email:  {{reply_to}}      ← THIS is what sends it to the visitor's inbox
      From name: Your Name
-     Subject:   Thank you for reaching out, {{from_name}} 
+     Subject:   Thank you for reaching out, {{from_name}} 👋
      Body:      Paste the HTML from autoreply-template.html
      Save → copy Template ID
 
@@ -1314,9 +1314,12 @@ function populateResumeDocument() {
       .join('   ·   ');
   }
 
-  // Experience — one .resume-entry per .exp-item, achievements list
-  // reused directly; falls back to the summary paragraph as a single
-  // bullet if a role has no itemized achievements yet.
+  // Experience — one .resume-entry per .exp-item. Only the top 2
+  // achievements per role make it in (a résumé should read as "here's
+  // the best of it", not a full copy of the site's expanded detail) —
+  // falls back to the summary paragraph as a single bullet if a role
+  // has no itemized achievements yet.
+  const MAX_BULLETS_PER_ROLE = 2;
   const resumeExperience = document.getElementById('resumeExperience');
   if (resumeExperience) {
     const expItems = document.querySelectorAll('.exp-item');
@@ -1331,7 +1334,7 @@ function populateResumeDocument() {
       const desc = item.querySelector('.exp-desc')?.textContent.replace(/\s+/g, ' ').trim() || '';
 
       const bullets = achievementEls.length
-        ? Array.from(achievementEls).map(li => li.textContent.replace(/\s+/g, ' ').trim())
+        ? Array.from(achievementEls).slice(0, MAX_BULLETS_PER_ROLE).map(li => li.textContent.replace(/\s+/g, ' ').trim())
         : [desc];
 
       return `
@@ -1360,13 +1363,15 @@ function populateResumeDocument() {
     }).join('   |   ');
   }
 
-  // Certifications — whole section hides itself if there are none yet,
-  // rather than printing an empty "Certifications" heading.
+  // Certifications — only the top 3 make it in (same "best of, not all
+  // of" reasoning as the experience bullets above). Whole section hides
+  // itself if there are none yet, rather than printing an empty heading.
+  const MAX_CERTIFICATIONS = 3;
   const resumeCertifications = document.getElementById('resumeCertifications');
   const resumeCertSection = document.getElementById('resumeCertSection');
   if (resumeCertifications && resumeCertSection) {
-    const certCards = document.querySelectorAll('.cert-card');
-    resumeCertifications.innerHTML = Array.from(certCards).map(card => {
+    const certCards = Array.from(document.querySelectorAll('.cert-card')).slice(0, MAX_CERTIFICATIONS);
+    resumeCertifications.innerHTML = certCards.map(card => {
       const title = card.querySelector('.cert-title')?.textContent.trim() || '';
       const issuer = card.querySelector('.cert-issuer')?.textContent.replace(/\s+/g, ' ').trim() || '';
       return `<div class="resume-entry-row"><strong>${escapeResumeText(title)}</strong><span>${escapeResumeText(issuer)}</span></div>`;
